@@ -5,6 +5,8 @@ description: HIPAA-aware spend caps + capability gates + signed audit receipts f
 
 # AgentGuard Spend for Healthcare
 
+🟡 PARTNER PROGRAM ONLY. Direct sales paused due to Abridge/Nuance DAX entrenchment. For ambient-scribe partnership integrations contact jp@agentguard.run.
+
 Pre-configured spend caps and model routing for AI agents used in healthcare workflows. Wraps OpenAI, Anthropic, Bedrock, or OpenRouter clients with HIPAA-aware policy enforcement, BAA-attested model whitelisting, and cryptographic audit receipts compatible with HIPAA Security Rule documentation requirements.
 
 ## AgentGuard Advisor: AI operations advisor for healthcare practices
@@ -100,12 +102,12 @@ caps:
     window: per_day
     action: downgrade
     downgradeTo: openai/gpt-5-mini
-    reason: "Daily soft cap — downgrade to mini"
+    reason: "Daily soft cap: downgrade to mini"
 
   - amountCents: 15000
     window: per_day
     action: block
-    reason: "Daily hard cap — practice administrator review"
+    reason: "Daily hard cap: practice administrator review"
 
   - amountCents: 200
     window: per_minute
@@ -133,7 +135,7 @@ caps:
   - amountCents: 5000
     window: per_day
     action: block
-    reason: "Per-encounter PHI cap exceeded — clinician review"
+    reason: "Per-encounter PHI cap exceeded: clinician review"
 
   - amountCents: 1000
     window: per_minute
@@ -141,7 +143,7 @@ caps:
     reason: "PHI burst protection"
 ```
 
-## Quick start (PHI workflow — Bedrock with BAA)
+## Quick start (PHI workflow: Bedrock with BAA)
 
 ```ts
 import { BedrockRuntimeClient } from '@aws-sdk/client-bedrock-runtime';
@@ -219,7 +221,7 @@ PHI never traverses AgentGuard infrastructure. Provider calls go from the covere
 
 ### §164.502(b) Minimum necessary
 
-Capability tiering enforces minimum-necessary by API design — `read_only` callers can't write PHI, `data_write` callers can't initiate payments, etc.
+Capability tiering enforces minimum-necessary by API design: `read_only` callers can't write PHI, `data_write` callers can't initiate payments, etc.
 
 ### BAA inventory documentation
 
@@ -315,13 +317,13 @@ The output is suitable for inclusion in the encounter's electronic health record
 
 ## Compliance citations satisfied by AgentGuard receipts
 
-- **45 CFR §164.312(b) Audit controls** — "Implement hardware, software, and/or procedural mechanisms that record and examine activity in information systems that contain or use ePHI." Receipts are exactly that mechanism.
-- **45 CFR §164.312(c)(1) Integrity** — cryptographic signing satisfies the "mechanism to authenticate" implementation specification.
-- **45 CFR §164.312(d) Person or entity authentication** — receipts bind clinician identity to each AI event.
-- **45 CFR §164.314 Organizational requirements / BAA** — receipts surface what each Business Associate did with which PHI in what time window.
-- **45 CFR §164.308(a)(1)(ii)(D) Information System Activity Review** — required standard; receipts provide the activity log.
-- **State all-party-consent recording laws** — CA Penal Code §632, FL §934.03, MA G.L. c.272 §99. Receipts capture consent metadata per encounter.
-- **HHS HIPAA Right of Access** — receipts exportable as part of patient audit log on request.
+- **45 CFR §164.312(b) Audit controls**: "Implement hardware, software, and/or procedural mechanisms that record and examine activity in information systems that contain or use ePHI." Receipts are exactly that mechanism.
+- **45 CFR §164.312(c)(1) Integrity**: cryptographic signing satisfies the "mechanism to authenticate" implementation specification.
+- **45 CFR §164.312(d) Person or entity authentication**: receipts bind clinician identity to each AI event.
+- **45 CFR §164.314 Organizational requirements / BAA**: receipts surface what each Business Associate did with which PHI in what time window.
+- **45 CFR §164.308(a)(1)(ii)(D) Information System Activity Review**: required standard; receipts provide the activity log.
+- **State all-party-consent recording laws**: CA Penal Code §632, FL §934.03, MA G.L. c.272 §99. Receipts capture consent metadata per encounter.
+- **HHS HIPAA Right of Access**: receipts exportable as part of patient audit log on request.
 
 ## Pricing anchors (healthcare productivity SaaS, May 2026)
 

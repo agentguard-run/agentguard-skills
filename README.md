@@ -1,6 +1,6 @@
 # AgentGuard Skills
 
-A collection of [Agent Skills](https://agentskills.io/home) for [AgentGuard Spend](https://agentguard.run) — local-runtime spend caps, capability-gated model routing, and Ed25519-signed audit receipts for AI agents.
+A collection of [Agent Skills](https://agentskills.io/home) for [AgentGuard Spend](https://agentguard.run): local-runtime spend caps, capability-gated model routing, and Ed25519-signed audit receipts for AI agents.
 
 ## Installing
 
@@ -29,7 +29,7 @@ rm -rf /tmp/agentguard-skills
 
 Codex CLI auto-discovers Agent Skills from any GitHub repo. Two install paths:
 
-**Option A — via GitHub CLI extension (recommended)**
+**Option A: via GitHub CLI extension (recommended)**
 
 ```bash
 # Install the gh-skill extension once (if not already installed)
@@ -39,7 +39,7 @@ gh extension install github/gh-skill
 gh skill install agentguard-run/agentguard-skills
 ```
 
-**Option B — direct copy (no extensions needed)**
+**Option B: direct copy (no extensions needed)**
 
 ```bash
 git clone https://github.com/agentguard-run/agentguard-skills.git /tmp/agentguard-skills
@@ -54,7 +54,7 @@ Verify with `codex skills list`.
 
 Same `gh skill install` flow as Codex above (or direct copy to the tool's skills directory: `~/.gemini-cli/skills/`, `~/.codeium/windsurf/skills/`, etc.).
 
-### GitHub CLI (`gh skill`) — universal
+### GitHub CLI (`gh skill`): universal
 
 Works with Claude Code, Cursor, OpenCode, Codex, Gemini CLI, Windsurf, and any tool that supports the Agent Skills standard. Requires [GitHub CLI](https://cli.github.com/) v2.90.0+ and the `gh-skill` extension.
 
@@ -72,6 +72,18 @@ gh skill install agentguard-run/agentguard-skills
 gh skill install agentguard-run/agentguard-skills/agentguard-spend-law-firm
 ```
 
+## Active vertical skills
+
+The five active vertical previews are:
+
+- Law firms: `agentguard-spend-law-firm`
+- Accounting and CPA firms: `agentguard-spend-accounting`
+- E-commerce operators: `agentguard-spend-ecommerce`
+- Real estate and mortgage teams: `agentguard-spend-real-estate`
+- Insurance agencies and producers: `agentguard-spend-insurance`
+
+Healthcare remains partner-program-only for ambient-scribe and EHR integrations.
+
 ## Skills
 
 ### `agentguard-spend` (general purpose)
@@ -82,12 +94,12 @@ The horizontal skill. Wraps OpenAI / Anthropic / Bedrock / OpenRouter clients wi
 
 ### Vertical skills
 
-Pre-configured for specific industries with vertical-aware task templates, compliance posture, and cap structures. Each one is **editable** — install it, then customize the policy.yaml to match your actual business.
+Pre-configured for specific industries with vertical-aware task templates, compliance posture, and cap structures. Each one is **editable**: install it, then customize the policy.yaml to match your actual business.
 
 | Skill | For | Compliance focus |
 |-------|-----|-----------------|
 | [`agentguard-spend-law-firm`](skills/agentguard-spend-law-firm/SKILL.md) | Law firms, solo practices, in-house counsel | Attorney-client privilege, ABA Rule 1.1 / 5.3, per-matter accounting |
-| [`agentguard-spend-healthcare`](skills/agentguard-spend-healthcare/SKILL.md) | Medical practices, dental, telehealth, healthcare platforms | HIPAA Security Rule §164.312, BAA-required model whitelisting |
+| [`agentguard-spend-insurance`](skills/agentguard-spend-insurance/SKILL.md) | Insurance agencies, producers, brokers | NAIC Model Bulletin, 11 NYCRR §215.13, Verisk CG 40 47/48 |
 | [`agentguard-spend-ecommerce`](skills/agentguard-spend-ecommerce/SKILL.md) | Shopify stores, DTC brands, marketplaces, headless commerce | PCI-DSS, Visa CE 3.0 chargeback evidence |
 | [`agentguard-spend-accounting`](skills/agentguard-spend-accounting/SKILL.md) | CPA firms, bookkeeping practices, fractional CFO, finance teams | SOX, PCAOB AS 1215, 7-year retention |
 | [`agentguard-spend-real-estate`](skills/agentguard-spend-real-estate/SKILL.md) | Brokerages, mortgage brokers, property management, title companies | Fair Housing Act, state real-estate commission audits |
@@ -98,7 +110,7 @@ Each vertical skill includes:
 - **Pre-configured cap structure** with sensible defaults for the vertical
 - **Compliance-aware capability gates** (PHI requires `data_write`, payment actions require `payment_initiate`, etc.)
 - **Per-transaction / per-matter / per-engagement scoping** for client billing and audit trails
-- **Customization instructions** — fork your local copy, edit cap values to match your real business, AgentGuard reads from YOUR file
+- **Customization instructions**: fork your local copy, edit cap values to match your real business, AgentGuard reads from YOUR file
 - **Projected savings math** specific to that vertical's typical usage patterns
 
 ## How vertical skills work
@@ -107,7 +119,7 @@ Each vertical skill includes:
 2. **Pick the skill** matching your business via `/plugin install agentguard@agentguard`
 3. **The skill walks you through** init: cap values, model assignments, capability tiers customized for your vertical
 4. **The skill writes** a `policy.yaml` to `~/.agentguard/` that you can edit
-5. **You customize** the policy.yaml to match your actual business — change cap values, swap models, add scopes
+5. **You customize** the policy.yaml to match your actual business: change cap values, swap models, add scopes
 6. **AgentGuard reads YOUR customized policy** on every wrapped client call
 
 Skills are **editable**. They're a starting point shaped by industry knowledge, not a black box.
@@ -144,12 +156,19 @@ The general [`agentguard-spend`](skills/agentguard-spend/SKILL.md) skill works f
 Or open an issue requesting a vertical: [github.com/agentguard-run/agentguard-skills/issues](https://github.com/agentguard-run/agentguard-skills/issues).
 
 Verticals on the roadmap (request via issue):
-- Insurance (claims processing, underwriting assistance)
 - Marketing agencies (content generation at scale, brand-voice gates)
 - Software dev teams (PR review, code search, test generation)
 - Education / tutoring (adaptive content, plagiarism detection)
-- Local services (barbershops, salons, gyms, dental — appointment-based businesses)
+- Local services (barbershops, salons, gyms, dental: appointment-based businesses)
 - Restaurants (menu engineering, customer service, supplier comms)
+### Provider integration recipes
+
+| Skill | For |
+|-------|-----|
+| [`agentguard-spend-baseten`](skills/agentguard-spend-baseten/SKILL.md) | Baseten OpenAI-compatible hosted OSS routes |
+| [`agentguard-spend-fireworks`](skills/agentguard-spend-fireworks/SKILL.md) | Fireworks OpenAI-compatible hosted OSS routes |
+| [`agentguard-spend-healthcare`](skills/agentguard-spend-healthcare/SKILL.md) | Partner-program-only healthcare integrations |
+
 
 ## About AgentGuard
 

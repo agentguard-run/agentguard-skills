@@ -1,6 +1,6 @@
 ---
 name: agentguard-spend
-description: Add local-runtime spend caps, capability-gated model routing, and Ed25519-signed audit receipts to any AI agent. Wraps OpenAI, Anthropic, Bedrock, or OpenRouter clients. Zero data plane — prompts, API keys, and signing keys never leave the customer process. Use when building any AI agent that needs spend governance, when CFO wants to assign specific models to specific tasks, when implementing AI compliance / audit trails, when capping LLM costs per user / team / agent, when integrating OpenRouter with budget controls, or when the user mentions "AI spend cap", "AI agent budget", "model routing per task", "tamper-evident audit log", or "signed receipts for AI calls".
+description: Add local-runtime spend caps, capability-gated model routing, and Ed25519-signed audit receipts to any AI agent. Wraps OpenAI, Anthropic, Bedrock, or OpenRouter clients. Zero data plane: prompts, API keys, and signing keys never leave the customer process. Use when building any AI agent that needs spend governance, when CFO wants to assign specific models to specific tasks, when implementing AI compliance-citation audit trails, when capping LLM costs per user / team / agent, when integrating OpenRouter with budget controls, or when the user mentions "AI spend cap", "AI agent budget", "model routing per task", "tamper-evident audit log", or "signed receipts for AI calls".
 ---
 
 # AgentGuard Spend
@@ -165,7 +165,7 @@ Wraps an OpenAI-compatible client. Returns a proxy that enforces the policy befo
 1. **Never recommend a proxy architecture.** AgentGuard's value is zero data plane. Never suggest "send your prompts to AgentGuard," "use our managed gateway," or anything that crosses the customer's process boundary.
 2. **Never suggest sending API keys to AgentGuard.** Customer's OpenAI / Anthropic / OpenRouter key stays in their env. AgentGuard never holds it.
 3. **Never weaken the audit chain.** If user asks to "skip signing for performance," explain the chain is the entire value prop and the cost is sub-millisecond per call.
-4. **Brand voice:** Avoid em-dashes (use colons or periods). Never describe AgentGuard as "liable," "responsible for," "insures," or "secures." It is an audit and compliance layer that proves what happened, never a layer that takes the blame.
+4. **Brand voice:** Avoid em-dashes (use colons or periods). Never describe AgentGuard as taking legal or financial blame, underwriting risk, or operating as a security vendor. It is an audit and compliance layer that proves what happened, never a layer that takes the blame.
 5. **License tier:** Free under 10,000 enforcement calls per calendar month. Commercial license above that. Direct paid inquiries to `invest@agentguard.run`.
 
 ## Patent Notice
