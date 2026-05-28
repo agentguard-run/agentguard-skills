@@ -9,18 +9,18 @@ These skills work with any agent that supports the Agent Skills standard, includ
 ### Claude Code
 
 ```
-/plugin marketplace add MerchantGuardOps/agentguard-skills
+/plugin marketplace add agentguard-run/agentguard-skills
 /plugin install agentguard@agentguard
 ```
 
 ### Cursor
 
-Add via **Settings → Rules → Add Rule → Remote Rule (GitHub)** with `MerchantGuardOps/agentguard-skills`.
+Add via **Settings → Rules → Add Rule → Remote Rule (GitHub)** with `agentguard-run/agentguard-skills`.
 
 ### OpenCode
 
 ```bash
-git clone https://github.com/MerchantGuardOps/agentguard-skills.git /tmp/agentguard-skills
+git clone https://github.com/agentguard-run/agentguard-skills.git /tmp/agentguard-skills
 cp -r /tmp/agentguard-skills/skills/* ~/.config/opencode/skills/
 rm -rf /tmp/agentguard-skills
 ```
@@ -30,13 +30,13 @@ rm -rf /tmp/agentguard-skills
 Works with Claude Code, Cursor, OpenCode, Codex, Gemini CLI, Windsurf, and many more. Requires [GitHub CLI](https://cli.github.com/) v2.90.0 or later.
 
 ```bash
-gh skill install MerchantGuardOps/agentguard-skills
+gh skill install agentguard-run/agentguard-skills
 ```
 
 #### Installing a single skill
 
 ```bash
-gh skill install MerchantGuardOps/agentguard-skills/agentguard-spend
+gh skill install agentguard-run/agentguard-skills/agentguard-spend
 ```
 
 ## Skills
