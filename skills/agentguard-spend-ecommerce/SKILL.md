@@ -322,6 +322,105 @@ For PCI auditors, the signed decision log satisfies §10 (logging requirements) 
 7. **Avoid em dashes** in generated policy comments.
 
 
+## The 5 outcomes e-commerce stores pay AI for
+
+| Outcome | Human-billable equivalent | Per-outcome cap | Primary model | Fallback | Capability |
+|---|---|---|---|---|---|
+| `support_ticket_resolved` | $4-$8 (CX rep handle time) | **$0.99** (Intercom Fin anchor) | `anthropic/claude-haiku-4.5` | `openai/gpt-5.4-mini` | `data_write` |
+| `product_page_published` | $15-$50 (copywriter) | **$0.50** | `anthropic/claude-sonnet-4.6` | `anthropic/claude-haiku-4.5` | `data_write` |
+| `cart_recovered` / quiz purchase | $5-$20 CAC saved | **$1.50** | `anthropic/claude-haiku-4.5` | `openai/gpt-5.4-nano` | `data_write` |
+| `chargeback_represented` (Visa CE 3.0) | $30-$150 (chargeback specialist) | **$2.00** | `openai/gpt-5.5` | `anthropic/claude-sonnet-4.6` | `read_only` |
+| `email_send_launched` | $40-$200 (copywriter + designer) | **$1.00** | `anthropic/claude-haiku-4.5` | `openai/gpt-5.4-mini` | `data_write` |
+
+## Top 5 pain points DTC founders cite in 2026
+
+1. **Triple Whale sees commerce + marketing but misses finance.** Brands wire 10+ point tools and lose unit-economics visibility (ask-luca.com/blogs/best-ai-tools-for-shopify-owners). AgentGuard fit: per-store ledger of AI cost by outcome attributable to a single SKU or campaign.
+2. **Shopify Storefront MCP has no rollback.** Tribe Studio: *"If an agent rewrites three years of carefully developed copy… there's no undo button."* Source: tribe.studio/insights/shopify-ai-toolkit-dtc-brands. AgentGuard fit: signed receipts with capability tier `payment_initiate` vs `data_write` gate destructive operations.
+3. **Visa CE 3.0 data burden.** Requires 18-month IP/device/account retention and matching across at least two prior transactions 120-365 days old. Source: usa.visa.com/content/dam/VCOM/regional/na/us/support-legal/documents/compelling-evidence-3.0-merchant-readiness-mar2023.pdf. AgentGuard fit: receipts double as the merchant's CE 3.0 evidence ledger.
+4. **Gorgias AI overage shock.** Confirmed $0.90-$1.00 per AI resolution can compound past forecast during BFCM. Source: gorgias.com/pricing. AgentGuard fit: per-outcome caps shut off automation when a campaign's CAC blows the budget.
+5. **Agentic checkout fraud.** eMarketer's March 2026 FAQ warns AI agents bypass traditional retail-media attribution. AgentGuard fit: signed receipts identify which agent (ChatGPT, Perplexity, Copilot, Visa CLI) made each purchase.
+
+## Compliance citations satisfied by AgentGuard receipts
+
+- **PCI-DSS 4.0 §10 (Logging and Monitoring Access)** — receipts cover the AI-side access events to the cardholder data environment.
+- **Visa Compelling Evidence 3.0** (eff Apr 15 2023; further updates Oct 2025 CEDP per Tidal Commerce) — two prior undisputed transactions 120-365 days old with matching IP/device/email/shipping (checkout.com/blog/visa-compelling-evidence-3-0). Receipts are the cleanest format for these elements.
+- **Mastercard First-Party Trust** — parallel program; receipts portable across networks.
+- **CAN-SPAM Act 15 U.S.C. §7704** — receipt-per-send is the audit trail.
+- **California CCPA / CPRA §1798.100** — AI-decisioning disclosure obligations.
+- **FTC Act §5** — receipts evidence brand-side review of AI-generated claims.
+- **EU AI Act Art. 50 (Transparency)** for stores selling into the EU.
+
+## Pricing anchors (e-commerce productivity SaaS, May 2026)
+
+| Tool | Price tier | AgentGuard Solo $49 maps to |
+|---|---|---|
+| Shopify | $39 Basic / $105 Shopify / $399 Advanced | ≈ one mid-tier add-on |
+| Klaviyo | $20+ entry, scales w/ contacts | ≈ a Klaviyo small-list seat |
+| Triple Whale / Rep AI / Octane AI | $99-$500+/month | < a single mid-tier |
+| Gorgias AI Agent | $0.90-$1.00 per resolution | ≈ 50 resolutions/month |
+| Intercom Fin | $0.99 per AI resolution + $29-$132/seat/month | ≈ 50 resolutions/month |
+
+Solo $49 ≈ a Klaviyo small-list seat. Startup $199 sits between Shopify Advanced and Triple Whale. Growth $999 ≈ a $50M-GMV DTC's monthly AI overhead.
+
+## Install via Visa CLI
+
+Agents on Visa CLI can buy a license autonomously and gain per-store ledger + Visa CE 3.0 evidence for every AI charge:
+
+```bash
+visa-cli buy https://agentguard.run/api/x402/license?tier=startup
+agentguard auth visa-cli
+```
+
+The Visa CLI angle is especially strong for e-commerce: the SAME card-on-file rail that powers agentic checkout (your customer's agent buying from your store) can power your store's spend governance (your support bot, copywriter agent, chargeback bot). AgentGuard receipts close the loop on both sides.
+
+## Signed receipt example (`chargeback_represented`)
+
+```json
+{
+  "version": "v0.4.2",
+  "outcome": "chargeback_represented",
+  "vertical": "ecommerce",
+  "storeId": "acme-apparel",
+  "disputeId": "vd-2026-1198",
+  "policy": "ecommerce-default-v1",
+  "posture": "standard",
+  "capability": "read_only",
+  "model": "openai/gpt-5.5",
+  "tokensIn": 22041,
+  "tokensOut": 1985,
+  "costCents": 14,
+  "decision": "allow",
+  "outcomeReached": true,
+  "visaCe3Evidence": {
+    "priorTxn1": { "id": "ord-1003", "daysAgo": 142, "match": "ip+device+shipping" },
+    "priorTxn2": { "id": "ord-1067", "daysAgo": 211, "match": "ip+email+shipping" }
+  },
+  "evidenceHash": "sha256:a83be1...",
+  "issuedAt": "2026-05-28T15:02:44.601Z",
+  "signature": "ed25519:2cf03e...8a91",
+  "previousReceiptHash": "sha256:e441fa..."
+}
+```
+
+The `visaCe3Evidence` block is the chargeback specialist's dream: two prior undisputed transactions 120-365 days old with the matching elements Visa requires. Export the chain at `agentguard explain --outcome chargeback_represented`.
+
+## What e-commerce brands use AI for in 2026 (top 10 use cases by adoption)
+
+Per Shopify Winter 2026 Editions, eMarketer's March 2026 agentic-commerce FAQ, Tribe Studio April 2026 Shopify AI Toolkit. Median SMB AI spend hit ~$1,500/month per a 10xClaw audit of 102 SMBs published February 2026.
+
+| # | Task | Monthly volume (one store) | Cost on Haiku 4.5 |
+|---|---|---|---|
+| 1 | Customer-support ticket resolution (Gorgias, Intercom Fin) | 500-5,000 | ~$0.009 |
+| 2 | Product description generation (Shopify Magic, Sidekick) | 50-500 SKUs | ~$0.008 |
+| 3 | Email subject lines / campaign copy (Klaviyo AI) | 8-30 campaigns | ~$0.007 |
+| 4 | Ad-creative variations (Meta / Google) | 20-200 | ~$0.005 |
+| 5 | Conversational shopping / "find your shade" (Skara, Octane AI, Rep AI) | 1,000-20,000 sessions | ~$0.011 |
+| 6 | Chargeback evidence assembly (Visa CE 3.0) | 5-200 disputes | ~$0.018 |
+| 7 | Inventory forecast + restock alerts | 30-100 cycles | ~$0.011 |
+| 8 | Review summarization + sentiment | 500-5,000 reviews | ~$0.005 |
+| 9 | GEO / product schema (Stormy AI) | 50-500 PDPs | ~$0.009 |
+| 10 | Agentic checkout via Shopify Storefront MCP | 10-10,000 sessions | ~$0.007 |
+
 ## When to add AgentGuard Trace (sister product)
 
 For workflows requiring court-admissible AI provenance, regulatory evidence chains, or multi-party signed attestation, pair this Spend skill with **AgentGuard Trace**. Trace adds cryptographic provenance per action, tamper-evident multi-party signed evidence chains, and triple-proof architecture suitable for legal discovery + regulatory investigation.

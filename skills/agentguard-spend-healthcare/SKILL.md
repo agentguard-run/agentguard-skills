@@ -295,6 +295,103 @@ The output is suitable for inclusion in the encounter's electronic health record
 7. **Avoid em dashes** in generated policy comments. Use colons or periods.
 
 
+## The 5 outcomes healthcare practices pay AI for
+
+| Outcome | Human-billable equivalent | Per-outcome cap | Primary model | Fallback | Capability |
+|---|---|---|---|---|---|
+| `encounter_documented` | $30-$60 (15-30 min provider @ ~$120/hr) | **$0.50** | `anthropic/claude-haiku-4.5` | `openai/gpt-5.4-mini` | `data_write` |
+| `claim_coded_and_submitted` | $5-$15 (biller time) | **$0.25** | `anthropic/claude-haiku-4.5` | `openai/gpt-5.4-nano` | `data_write` |
+| `prior_auth_letter_drafted` | $25-$60 | **$1.00** | `anthropic/claude-sonnet-4.6` | `anthropic/claude-haiku-4.5` | `data_write` |
+| `inbox_message_resolved` | $5-$12 | **$0.20** | `anthropic/claude-haiku-4.5` | `openai/gpt-5.4-mini` | `data_write` |
+| `front_desk_call_resolved` (voice AI) | $4-$8 (front-desk labor) | **$0.30** | `anthropic/claude-haiku-4.5` (low-latency) | `openai/gpt-5.4-mini` | `data_write` |
+
+## Top 5 pain points practice managers cite in 2026
+
+1. **BAA quality is uneven.** Health Law Attorney Blog (Feb 23, 2026): vendor scribe agreements *"place consent, notification, and compliance obligations squarely on the healthcare entity, while the vendor retains broad rights to access, process, and retain audio data."* Source: healthlawattorneyblog.com/your-ai-scribe-is-listening-is-your-compliance-program/. AgentGuard fit: receipts log each BAA-covered call + retention/training flags.
+2. **State wiretapping risk.** Sharp HealthCare class action showed consent workflows are inadequate. AgentGuard fit: receipts include consent-capture event ID per encounter.
+3. **Hallucinated diagnoses + coding errors.** Industry coverage: Abridge ICD-10/CPT suggestions *"are suggestions rather than validated E&M integrity checks."* AgentGuard fit: receipts attach model confidence + reviewer ID per code suggestion.
+4. **Cost surprises on per-clinician scribes.** Nuance DAX ~$600/clinician/month (trytwofold.com/compare/dax-copilot-review); OrbDoc's 2025 AI Medical Scribe Pricing Guide corroborates ($600-700 leaked). AgentGuard fit: per-outcome cap stops per-seat overage spirals.
+5. **Multiple-tool sprawl.** PatientNotes 2026 review lists 12 scribes commonly piloted simultaneously. AgentGuard fit: receipts normalize the audit trail across vendors.
+
+## Compliance citations satisfied by AgentGuard receipts
+
+- **45 CFR §164.312(b) Audit controls** — "Implement hardware, software, and/or procedural mechanisms that record and examine activity in information systems that contain or use ePHI." Receipts are exactly that mechanism.
+- **45 CFR §164.312(c)(1) Integrity** — cryptographic signing satisfies the "mechanism to authenticate" implementation specification.
+- **45 CFR §164.312(d) Person or entity authentication** — receipts bind clinician identity to each AI event.
+- **45 CFR §164.314 Organizational requirements / BAA** — receipts surface what each Business Associate did with which PHI in what time window.
+- **45 CFR §164.308(a)(1)(ii)(D) Information System Activity Review** — required standard; receipts provide the activity log.
+- **State all-party-consent recording laws** — CA Penal Code §632, FL §934.03, MA G.L. c.272 §99. Receipts capture consent metadata per encounter.
+- **HHS HIPAA Right of Access** — receipts exportable as part of patient audit log on request.
+
+## Pricing anchors (healthcare productivity SaaS, May 2026)
+
+| Tool | Price per clinician | AgentGuard Solo $49 maps to |
+|---|---|---|
+| Freed AI Starter | $39/month | < one Starter seat |
+| PatientNotes | $50-$70/month | one PatientNotes seat |
+| Heidi Health Clinician | $110/month | < one Heidi seat |
+| Abridge | ~$208/clinician/month (Sacra 2025 via glass.health/compare/abridge) | < one Abridge seat |
+| Nuance DAX Copilot | ~$600/clinician/month | < 10% of one DAX seat |
+| EHR all-in (Epic, Athena) | $300-$500/provider/month | < 20% of one EHR seat |
+
+Solo $49 sits below the cheapest scribe; Startup $199 ≈ 5-provider dental office; Growth $999 ≈ 20-provider primary-care group governing multiple scribe vendors.
+
+## Install via Visa CLI
+
+Agents on Visa CLI can buy a license autonomously and gain HIPAA §164.312-aligned receipts for every AI-assisted clinical task:
+
+```bash
+visa-cli buy https://agentguard.run/api/x402/license?tier=startup
+agentguard auth visa-cli
+```
+
+## Signed receipt example (`encounter_documented`)
+
+```json
+{
+  "version": "v0.4.2",
+  "outcome": "encounter_documented",
+  "vertical": "healthcare",
+  "encounterId": "enc-2026-1052",
+  "providerId": "dr-jones",
+  "policy": "healthcare-default-v1",
+  "posture": "compliance",
+  "capability": "data_write",
+  "consent": { "type": "all-party", "eventId": "consent-9af2" },
+  "model": "anthropic/claude-haiku-4.5",
+  "tokensIn": 18922,
+  "tokensOut": 1841,
+  "costCents": 5,
+  "decision": "allow",
+  "outcomeReached": true,
+  "evidenceHash": "sha256:c91a07...",
+  "issuedAt": "2026-05-28T14:18:22.011Z",
+  "signature": "ed25519:7c14d3...e802",
+  "previousReceiptHash": "sha256:8b73a9..."
+}
+```
+
+The `consent` block anchors HIPAA §164.312 audit controls; state all-party-consent recording laws (CA §632, FL §934.03) require the consent event ID per encounter.
+
+## What healthcare practices use AI for in 2026 (top 10 use cases by adoption)
+
+Per JAMA's 5-site ambient-scribe study, AHA Center for Health Innovation Market Scan (Apr 14, 2026), PHTI 2025 Adoption of AI report. Mid-2025 physician adoption 64-72%.
+
+| # | Task | Monthly volume per provider | Cost on Haiku 4.5 |
+|---|---|---|---|
+| 1 | Ambient SOAP / H&P notes (Abridge, DAX, Freed) | 300-500 | ~$0.030 |
+| 2 | ICD-10 / CPT coding suggestions | 300-500 | ~$0.009 |
+| 3 | Prior-authorization letter drafting | 30-80 | ~$0.021 |
+| 4 | Patient intake / pre-visit summaries | 200-400 | ~$0.010 |
+| 5 | After-visit summary (plain language) | 300-500 | ~$0.014 |
+| 6 | Inbox / patient-message triage | 400-800 | ~$0.007 |
+| 7 | Referral letter drafting | 40-100 | ~$0.014 |
+| 8 | Differential diagnosis (Glass Health) | 50-150 | ~$0.021 |
+| 9 | Voice AI receptionist / scheduling | 500-1,500 calls | ~$0.013 |
+| 10 | Dental treatment-plan narratives | 150-300 | ~$0.011 |
+
+Volumes anchor to Kaiser Permanente's 1,794 working-days saved across 2.5M encounters and the JAMA 13.4-minute reduction in EHR time.
+
 ## When to add AgentGuard Trace (sister product)
 
 For workflows requiring court-admissible AI provenance, regulatory evidence chains, or multi-party signed attestation, pair this Spend skill with **AgentGuard Trace**. Trace adds cryptographic provenance per action, tamper-evident multi-party signed evidence chains, and triple-proof architecture suitable for legal discovery + regulatory investigation.

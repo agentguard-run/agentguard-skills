@@ -298,6 +298,107 @@ scope:
 7. **Avoid em dashes** in generated policy comments.
 
 
+## The 5 outcomes real estate brokers pay AI for
+
+| Outcome | Human-billable equivalent | Per-outcome cap | Primary model | Fallback | Capability |
+|---|---|---|---|---|---|
+| `listing_prepped` | $50-$200 (marketing time) | **$1.00** | `anthropic/claude-haiku-4.5` | `openai/gpt-5.4-mini` | `data_write` |
+| `lead_qualified` | $30-$120 (ISA / admin) | **$1.50** | `anthropic/claude-haiku-4.5` | `openai/gpt-5.4-mini` | `data_write` |
+| `cma_delivered` | $30-$80 | **$1.00** | `anthropic/claude-sonnet-4.6` | `anthropic/claude-haiku-4.5` | `read_only` |
+| `showing_booked` | $20-$40 | **$0.75** | `anthropic/claude-haiku-4.5` | `openai/gpt-5.4-mini` | `data_write` |
+| `transaction_file_closed` | $200-$800 (TC time) | **$5.00** | `openai/gpt-5.5` | `anthropic/claude-sonnet-4.6` | `data_write` |
+
+## Top 5 pain points broker/owners cite in 2026
+
+1. **Fair Housing exposure from AI tenant screening.** HUD's May 2, 2024 guidance: housing providers *"may be vicariously liable"* for screening AI even when outsourced. Source: consumerfinancialserviceslawmonitor.com/2024/05/hud-issues-guidance-on-applicability-of-the-fair-housing-act-to-tenant-screening-and-housing-related-advertising-that-relies-upon-algorithms-and-ai/. AgentGuard fit: signed receipts log every input used in screening, providing FHA defensibility evidence.
+2. **Listing-description copyright + MLS rule risk.** Realtor.com / MLS rules require accuracy; AI-generated marketing copy can over-claim. AgentGuard fit: receipts attach the listing-data source.
+3. **TCPA exposure from AI SMS follow-up.** Lofty AOS, Structurely, Perspective AI all send AI-driven SMS; TCPA penalties run $500-$1,500 per violation. AgentGuard fit: consent-event ID per outbound message.
+4. **Tool sprawl + licensing.** Metricus 2026 reports CRM-suite confusion post Lone Wolf / LionDesk / Compass-Anywhere consolidation. AgentGuard fit: portable receipts across Lofty + Follow Up Boss + Rechat.
+5. **Spend creep in CRM AI add-ons.** Lofty AOS starts ~$299/month per AIscending; Compass One bundles raise costs. AgentGuard fit: per-outcome budget caps independent of CRM seat price.
+
+## Compliance citations satisfied by AgentGuard receipts
+
+- **Fair Housing Act (42 U.S.C. §3604)** — HUD May 2024 guidance extends to AI screening + ad targeting. Source: archives.hud.gov/news/2024/pr24-098.cfm.
+- **Equal Credit Opportunity Act (15 U.S.C. §1691) + Regulation B (12 CFR §1002)** — applies to mortgage AI underwriting; adverse-action notices must include specific reasons.
+- **TCPA (47 U.S.C. §227) + 47 CFR §64.1200** — written express consent for AI SMS/voice; FCC Feb 2024 AI ruling declared AI-generated voice "artificial."
+- **TRID (12 CFR §1026.19)** — mortgage disclosure timing; AI-generated loan docs must respect the 3-business-day rule.
+- **RESPA (12 U.S.C. §2607)** — kickback rules apply to AI-driven referrals.
+- **State-specific disclosure laws** — CA Civil Code §1102 (TDS), TX §5.008, FL §689.25. AI summaries do not displace seller's statutory duty.
+- **NAR Code of Ethics Article 12** — truth in advertising of AI-generated content.
+
+## Pricing anchors (real estate / mortgage productivity SaaS, May 2026)
+
+| Tool | Price tier | AgentGuard Solo $49 maps to |
+|---|---|---|
+| Cloud CMA (Lone Wolf) | $35-$49/month | ≈ a Cloud CMA seat |
+| Top Producer / Wise Agent | $30-$80/agent/month | ≈ one mid-tier seat |
+| Follow Up Boss Grow | $58/user/month annual ($69 monthly) | ≈ one FUB seat |
+| Lofty AOS | ~$299/month entry [partial] | ≈ a Lofty add-on |
+| kvCORE / BoldTrail | $300+/agent/month brokerage-negotiated | < a kvCORE seat |
+| MLS dues | $300-$800/year per agent | ≈ 2 months of MLS dues |
+
+Solo $49 ≈ Cloud CMA seat or below FUB. Startup $199 ≈ 4-5-agent team. Growth $999 ≈ 20-agent brokerage adding portable governance over Lofty / FUB / Rechat.
+
+## Install via Visa CLI
+
+Agents on Visa CLI can buy a license autonomously and gain Fair-Housing-ready signed receipts for every AI-assisted lead, listing, and closing:
+
+```bash
+visa-cli buy https://agentguard.run/api/x402/license?tier=startup
+agentguard auth visa-cli
+```
+
+## Signed receipt example (`lead_qualified`)
+
+```json
+{
+  "version": "v0.4.2",
+  "outcome": "lead_qualified",
+  "vertical": "real-estate",
+  "brokerageId": "acme-realty",
+  "leadId": "lead-2026-44218",
+  "agentId": "agent.jones",
+  "policy": "real-estate-default-v1",
+  "posture": "standard",
+  "capability": "data_write",
+  "fairHousingAudit": {
+    "inputs": ["budget", "timeline", "neighborhoodPreference"],
+    "excluded": ["race", "familialStatus", "nationalOrigin", "disability"],
+    "screeningModelFingerprint": "sha256:ee14a2..."
+  },
+  "tcpaConsent": { "captured": true, "eventId": "consent-c481" },
+  "model": "anthropic/claude-haiku-4.5",
+  "tokensIn": 4012,
+  "tokensOut": 891,
+  "costCents": 2,
+  "decision": "allow",
+  "outcomeReached": true,
+  "evidenceHash": "sha256:a48fe1...",
+  "issuedAt": "2026-05-28T16:48:09.221Z",
+  "signature": "ed25519:6e91ca...3088",
+  "previousReceiptHash": "sha256:b0f922..."
+}
+```
+
+The `fairHousingAudit` block is the FHA defensibility evidence: list of inputs used in screening + explicit exclusion of protected-class proxies + model fingerprint for reproducibility. The `tcpaConsent` block satisfies 47 CFR §64.1200.
+
+## What real estate brokers use AI for in 2026 (top 10 use cases by adoption)
+
+Per Lofty AOS launch (RealEstateNews.com Feb 3, 2026), Loft47 transaction tooling (Apr 2026), Rechat 2026 State of AI & Real Estate Marketing Report. NAR's 2025 Technology Survey (Sep 18, 2025; n=1,241 from 49,233-Realtor sample): 68% Realtor AI adoption, but only 20% daily, 22% weekly, 27% a few times a month, 32% not yet.
+
+| # | Task | Monthly volume per agent | Cost on Haiku 4.5 |
+|---|---|---|---|
+| 1 | Listing description generation | 5-40 | ~$0.008 |
+| 2 | AI lead capture / nurture (Structurely, Perspective AI) | 100-2,000 conversations | ~$0.009 |
+| 3 | Comparable Market Analysis (CMA) generation | 8-40 | ~$0.016 |
+| 4 | Contract / disclosure document extraction (V7 Go, Loft47) | 5-30 | ~$0.035 |
+| 5 | SMS / voice follow-up (Lofty AOS) | 200-2,000 | ~$0.007 |
+| 6 | Social media content (Rechat) | 8-40 posts | ~$0.007 |
+| 7 | Tenant screening / mortgage pre-qual | 5-50 | ~$0.009 |
+| 8 | Email drafting to clients / listings | 200-1,500 | ~$0.005 |
+| 9 | Predictive seller identification (SmartZip) | 50-500 records | ~$0.005 |
+| 10 | Loan-doc summarization (mortgage) | 5-40 | ~$0.040 |
+
 ## When to add AgentGuard Trace (sister product)
 
 For workflows requiring court-admissible AI provenance, regulatory evidence chains, or multi-party signed attestation, pair this Spend skill with **AgentGuard Trace**. Trace adds cryptographic provenance per action, tamper-evident multi-party signed evidence chains, and triple-proof architecture suitable for legal discovery + regulatory investigation.

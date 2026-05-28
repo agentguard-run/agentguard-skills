@@ -326,6 +326,104 @@ caps:
 7. **Avoid em dashes** in generated policy comments.
 
 
+## The 5 outcomes accounting firms pay AI for
+
+| Outcome | Human-billable equivalent | Per-outcome cap | Primary model | Fallback | Capability |
+|---|---|---|---|---|---|
+| `bookkeeping_cycle_closed` (month-end) | $200-$800 (3-10 hrs bookkeeper) | **$5.00** | `anthropic/claude-haiku-4.5` | `openai/gpt-5.4-nano` | `data_write` |
+| `tax_return_drafted` | $400-$2,500 (preparer) | **$7.50** | `openai/gpt-5.5` | `anthropic/claude-sonnet-4.6` | `data_write` |
+| `irs_notice_response_sent` | $300-$1,200 | **$3.00** | `anthropic/claude-sonnet-4.6` | `openai/gpt-5.5` | `data_write` |
+| `client_email_resolved` | $25-$75 | **$0.50** | `anthropic/claude-haiku-4.5` | `openai/gpt-5.4-mini` | `data_write` |
+| `workpaper_completed` (audit / review) | $150-$600 | **$4.00** | `openai/gpt-5.5` | `anthropic/claude-opus-4.7` | `data_write` |
+
+Billable anchors per Karbon's 2026 report (60 minutes/employee/day saved) and Intuit Accountant Survey.
+
+## Top 5 pain points partners cite in 2026
+
+1. **Data-security anxiety is the #1 reported concern.** Karbon's 2026 State of AI in Accounting Report: 83% of professionals report growing data-security concerns about AI (+7% YoY). AgentGuard fit: receipts evidence which model touched which client file.
+2. **Uncontrolled tool sprawl and paste-and-pray.** *"Staff may paste client information into tools without understanding how that data is stored."* Source: acecloudhosting.com/blog/use-ai-to-grow-cpa-practice/. AgentGuard fit: per-capability-tier gating (`read_only` vs `data_write`).
+3. **Hallucination on tax research.** Accounting Today's 2026 Thought Leaders Survey: *"even a small error can have big consequences."* AgentGuard fit: signed receipts log the source statute and human-review checkbox.
+4. **AICPA / SOC 2 readiness gap.** Only 37% of firms invest in AI training per Karbon. AgentGuard fit: receipts double as evidence in SOC 2 CC7 control reviews.
+5. **Audit-trail expectations from clients.** Mid-market clients now ask CPAs how AI is used. AgentGuard fit: exportable receipt log is the client deliverable.
+
+## Compliance citations satisfied by AgentGuard receipts
+
+- **PCAOB AS 1215 (Audit Documentation)** — SOX §103 mandates 7-year retention of audit work papers "in sufficient detail to support the conclusions reached." Source: pcaobus.org/oversight/standards/auditing-standards/details/AS1215. The 14-day documentation-completion-date rule (accelerated from 45 days per PCAOB Release 2024-004) makes contemporaneous AI receipts critical.
+- **SOX §802 / 18 U.S.C. §1519** — destruction/falsification of records carries felony liability.
+- **SEC Rule 2-06 of Regulation S-X (17 CFR §210.2-06)** — 7-year retention of memoranda, correspondence, communications.
+- **IRC §6107(b)** — tax preparers must retain a copy of the return or list of TINs (3-year minimum, 7-year best practice per AICPA: thetaxadviser.com/issues/2023/feb/documentation-and-recordkeeping-for-tax-practitioners/).
+- **IRS Period of Limitations** — 3 years standard, 6 years if >25% income understated, indefinite if fraudulent (irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records).
+- **Circular 230 §10.36 / §10.37** — competence and oversight obligations on preparers, including any AI used.
+- **AICPA SSTS No. 7** — tax advice should be contemporaneously documented.
+- **GLBA Safeguards Rule (16 CFR Part 314)** — applies to CPAs as financial institutions.
+
+## Pricing anchors (accounting productivity SaaS, May 2026)
+
+| Tool | Price tier | AgentGuard Solo $49 maps to |
+|---|---|---|
+| QuickBooks Online | $35-$235/month | ≈ a QuickBooks Online seat |
+| TaxDome / Financial Cents | $50-$80/user/month | ≈ one TaxDome seat |
+| Karbon Team / Business | $59 / $89 per user/month | < one Karbon Team seat |
+| Canopy | ~$74/user/month base | < one Canopy seat |
+| DataSnipper | ~$1,000+/user/year [unverified] | < 5% of one DataSnipper seat |
+
+Solo $49 ≈ a QuickBooks Online seat. Startup $199 ≈ < 4 Karbon Team seats. Growth $999 ≈ a 10-15-staff firm bolting governance under their full Karbon + QBO + Canopy stack.
+
+## Install via Visa CLI
+
+Agents on Visa CLI can buy a license autonomously and gain PCAOB AS 1215 / IRS 7-year retention receipts for every AI-assisted engagement:
+
+```bash
+visa-cli buy https://agentguard.run/api/x402/license?tier=startup
+agentguard auth visa-cli
+```
+
+## Signed receipt example (`workpaper_completed`)
+
+```json
+{
+  "version": "v0.4.2",
+  "outcome": "workpaper_completed",
+  "vertical": "accounting",
+  "engagementId": "eng-2026-acme-q1-audit",
+  "workpaperId": "wp-cash-recon-2026-03",
+  "userId": "auditor.lopez",
+  "policy": "accounting-default-v1",
+  "posture": "compliance",
+  "capability": "data_write",
+  "model": "openai/gpt-5.5",
+  "tokensIn": 38114,
+  "tokensOut": 4022,
+  "costCents": 18,
+  "decision": "allow",
+  "outcomeReached": true,
+  "pcaobAs1215": { "retentionUntil": "2033-05-28T00:00:00Z", "completionDate": "2026-05-28" },
+  "evidenceHash": "sha256:f04a92...",
+  "issuedAt": "2026-05-28T16:11:18.402Z",
+  "signature": "ed25519:8b2a17...c104",
+  "previousReceiptHash": "sha256:91ef03..."
+}
+```
+
+The `pcaobAs1215` block makes the 7-year retention obligation self-evident on the receipt face; auditors can export the full engagement chain at `agentguard explain --engagement eng-2026-acme-q1-audit`.
+
+## What accounting firms use AI for in 2026 (top 10 use cases by adoption)
+
+Per Karbon's 2026 State of AI in Accounting Report (98% AI adoption), Intuit's 2025 Accountant Technology Survey (46% daily use), CPA Trendlines' January 2026 Outlook.
+
+| # | Task | Monthly volume (10-staff firm) | Cost on Haiku 4.5 |
+|---|---|---|---|
+| 1 | Bank reconciliation / transaction coding | 5,000-20,000 tx | ~$0.0015 |
+| 2 | Document classification (W-2, 1099, K-1) | 500-3,000 docs | ~$0.003 |
+| 3 | Client-email drafting / triage (Karbon AI) | 1,000-4,000 | ~$0.007 |
+| 4 | IRS notice response drafting | 10-80 | ~$0.015 |
+| 5 | Tax research (TaxGPT, Thomson Reuters AI) | 30-200 queries | ~$0.018 |
+| 6 | Monthly close / variance analysis | 20-80 client closes | ~$0.025 |
+| 7 | Audit workpaper drafting (DataSnipper) | 50-500 workpapers | ~$0.032 |
+| 8 | Fraud / anomaly detection (MindBridge) | continuous | ~$0.006 |
+| 9 | Financial-statement summary generation | 30-100 | ~$0.016 |
+| 10 | Onboarding + engagement-letter drafting | 5-30 new clients | ~$0.014 |
+
 ## When to add AgentGuard Trace (sister product)
 
 For workflows requiring court-admissible AI provenance, regulatory evidence chains, or multi-party signed attestation, pair this Spend skill with **AgentGuard Trace**. Trace adds cryptographic provenance per action, tamper-evident multi-party signed evidence chains, and triple-proof architecture suitable for legal discovery + regulatory investigation.

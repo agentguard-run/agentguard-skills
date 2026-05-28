@@ -275,6 +275,106 @@ This produces a signed receipt list per matter, suitable for inclusion in client
 6. **Avoid em dashes** in any generated policy comments. Use colons or periods.
 
 
+## The 5 outcomes law firms pay AI for
+
+Outcome-based budget structure (drop these into your policy alongside the per-day caps above). Each cap assumes the mandatory human verification pass required by ABA Formal Op. 512 — AgentGuard's receipt logs the verification, you keep the work product.
+
+| Outcome | Human-billable equivalent | Per-outcome cap | Primary model | Fallback (on downgrade) | Capability |
+|---|---|---|---|---|---|
+| `contract_redlined` | $400-$1,200 (2-4 associate hrs @ $200-$300/hr) | **$2.00** | `anthropic/claude-sonnet-4.6` | `anthropic/claude-haiku-4.5` | `data_write` |
+| `research_memo_delivered` | $600-$1,800 (2-6 associate hrs) | **$3.00** | `openai/gpt-5.5` | `anthropic/claude-opus-4.7` | `read_only` |
+| `matter_intake_closed` | $250-$500 (paralegal + attorney) | **$1.50** | `anthropic/claude-haiku-4.5` | `openai/gpt-5.4-mini` | `data_write` |
+| `deposition_pack_assembled` | $1,500-$4,000 (5-15 hrs) | **$5.00** | `anthropic/claude-opus-4.7` | `openai/gpt-5.5` | `read_only` |
+| `brief_or_motion_drafted` | $2,000-$8,000 (10-30 hrs) | **$7.50** | `anthropic/claude-opus-4.7` | `openai/gpt-5.5` | `data_write` |
+
+## Top 5 pain points law-firm partners cite in 2026
+
+1. **AI bills exploding unpredictably.** Axios (May 28, 2026): an AI consultant's client *"spent half a billion dollars in a single month after failing to put usage limits on Claude licenses for employees."* Source: axios.com/2026/05/28/ai-spending-roi-enterprise-costs. AgentGuard fit: per-outcome budget caps with hard-stop signed receipts.
+2. **Hallucinations producing court sanctions.** February 2026 federal sanction of $12,000 plus public admonition for AI-generated fake citations. Source: spellbook.legal/briefs/ai-litigation. AgentGuard fit: signed receipts log model + prompt + output for every AI step.
+3. **ABA Formal Op. 512 audit-trail anxiety.** Lawyers must "have a reasonable understanding" of GAI capabilities and disclose AI use when it influences "a significant decision in the representation." Source: americanbar.org/news/abanews/aba-news-archives/2024/07/aba-issues-first-ethics-guidance-ai-tools/. AgentGuard fit: receipt-per-outcome IS the paper trail Op. 512 presupposes.
+4. **Confidentiality fear with self-learning tools.** Op. 512: self-learning GAI requires explicit (not boilerplate) informed consent before client data is input. Source: thebarexaminer.ncbex.org/article/fall-2024/generative-artificial-intelligence-tools/. AgentGuard fit: receipts include model fingerprint + zero-retention flag.
+5. **Cost-billing ethics.** Op. 512: lawyers "may not charge clients for time necessitated by their own inexperience" with GAI tools. AgentGuard fit: per-matter outcome budgets attach directly to client billing codes for defensible billing distinction.
+
+## Compliance citations satisfied by AgentGuard receipts
+
+- **ABA Model Rule 1.1 (Competence) Comment 8** — keep abreast of "benefits and risks associated with relevant technology." Receipts evidence which model + version was used.
+- **ABA Model Rule 1.6 (Confidentiality) + 1.9(c) + 1.18(b)** — Op. 512 requires "reasonable efforts to prevent inadvertent or unauthorized disclosure." Receipts log routing decisions.
+- **ABA Model Rule 1.4 (Communication)** — disclosure when AI "will influence a significant decision."
+- **ABA Model Rules 3.1 / 3.3 (Candor)** — audit trail of verification before filing.
+- **ABA Model Rules 5.1 / 5.3 (Supervisory responsibilities)** — partner-level supervision evidence.
+- **ABA Model Rule 1.5 (Fees)** — defensible distinction between AI-assisted vs unaided work.
+- **Malpractice insurance underwriting** — 2025-2026 carriers ask about AI governance; receipts answer the questionnaire.
+
+## Pricing anchors (legal productivity SaaS, May 2026)
+
+| Tool | Price per seat | AgentGuard Solo $49 maps to |
+|---|---|---|
+| Clio Manage EasyStart | $49/user/month | one EasyStart seat |
+| Clio Essentials / Complete | $89-$149/user/month | < one Essentials seat |
+| Spellbook | $99-$179/user/month | < one Spellbook seat |
+| Thomson Reuters CoCounsel | ~$225/user/month | < one CoCounsel seat |
+| GC AI | $500/seat/month | < 10% of one GC AI seat |
+| Harvey AI | $1,200-$2,000+/seat/month | < 5% of one Harvey seat |
+
+The wedge is the **ABA-grade audit trail**, not cost. Op. 512 turned "audit trail" into a billable client deliverable; receipts are the cheapest insurance policy a partner ever bought.
+
+## Install via Visa CLI
+
+Once Visa CLI is installed (`visa-cli install claude`), an agent can purchase an AgentGuard Spend license autonomously and gain the policy + receipts described above:
+
+```bash
+visa-cli buy https://agentguard.run/api/x402/license?tier=solo
+agentguard auth visa-cli   # activate the license_key the agent just bought
+```
+
+Settlement is USDC on Base via the Coinbase x402.org facilitator. Visa records the purchase on the card on file. About 8 seconds end-to-end.
+
+## Signed receipt example (`contract_redlined`)
+
+```json
+{
+  "version": "v0.4.2",
+  "outcome": "contract_redlined",
+  "vertical": "law",
+  "matterId": "matter-2026-005",
+  "userId": "attorney.smith",
+  "policy": "law-firm-default-v1",
+  "posture": "compliance",
+  "capability": "data_write",
+  "model": "anthropic/claude-sonnet-4.6",
+  "tokensIn": 14237,
+  "tokensOut": 4891,
+  "costCents": 8,
+  "decision": "allow",
+  "outcomeReached": true,
+  "evidenceHash": "sha256:bd64f72a...",
+  "issuedAt": "2026-05-28T13:42:11.503Z",
+  "signature": "ed25519:1a8c70...e9d4",
+  "previousReceiptHash": "sha256:7f9e23..."
+}
+```
+
+Verify any receipt at https://agentguard.run/verify — the receipt never leaves your machine; the verifier runs in-browser.
+
+## What law firms use AI for in 2026 (top 10 use cases by adoption)
+
+Per Spellbook's "Law Firms Using AI" case studies, GC AI 2026 buyer's field guide, and Thomson Reuters' 2025 Future of Professionals Report (2,275 professionals, 50+ countries): 240 hours saved annually per legal professional, up from 200 in 2024 = ~$19,000 annual value per professional.
+
+| # | Task | Monthly volume (solo / small / mid) | Cost on Haiku 4.5 |
+|---|---|---|---|
+| 1 | Contract first-pass review / redline | 20 / 80 / 300 | ~$0.04 |
+| 2 | Legal research memo with citations | 15 / 60 / 200 | ~$0.07 |
+| 3 | Document / discovery summarization | 10 / 50 / 250 | ~$0.10 |
+| 4 | Deposition prep + witness summaries | 5 / 20 / 80 | ~$0.07 |
+| 5 | Client intake + matter scoping | 30 / 100 / 250 | ~$0.014 |
+| 6 | Billable-hour narratives | 200 / 800 / 3000 | ~$0.003 |
+| 7 | Email triage + draft replies | 300 / 1200 / 5000 | ~$0.007 |
+| 8 | Statute / regulatory monitoring | 4 / 12 / 30 | ~$0.07 |
+| 9 | Brief / motion drafting | 6 / 25 / 100 | ~$0.075 |
+| 10 | Settlement / damages analysis | 3 / 10 / 40 | ~$0.06 |
+
+Per-task token counts are reasoned estimates (vendors don't publish them); model prices anchored to anthropic.com/news/claude-haiku-4-5 + platform.claude.com/docs/en/about-claude/pricing (May 2026).
+
 ## When to add AgentGuard Trace (sister product)
 
 For workflows requiring court-admissible AI provenance, regulatory evidence chains, or multi-party signed attestation, pair this Spend skill with **AgentGuard Trace**. Trace adds cryptographic provenance per action, tamper-evident multi-party signed evidence chains, and triple-proof architecture suitable for legal discovery + regulatory investigation.
