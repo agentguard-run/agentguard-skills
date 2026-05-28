@@ -1,0 +1,14 @@
+{
+  "name": "agentguard",
+  "owner": {
+    "name": "AgentGuard",
+    "url": "https://agentguard.run"
+  },
+  "plugins": [
+    {
+      "name": "agentguard",
+      "source": "./",
+      "description": "Skills for AgentGuard Spend: spend caps + audit receipts for AI agents."
+    }
+  ]
+}

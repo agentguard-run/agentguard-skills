@@ -1,0 +1,15 @@
+{
+  "$schema": "https://code.claude.com/schemas/marketplace.json",
+  "name": "agentguard",
+  "owner": {
+    "name": "AgentGuard",
+    "url": "https://agentguard.run"
+  },
+  "plugins": [
+    {
+      "name": "agentguard",
+      "source": "./",
+      "description": "Skills for AgentGuard Spend: local-runtime spend caps, capability gates, and Ed25519-signed audit receipts for AI agents. Works with OpenAI, Anthropic, Bedrock, and OpenRouter."
+    }
+  ]
+}

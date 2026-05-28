@@ -1,0 +1,9 @@
+{
+  "name": "agentguard",
+  "description": "Skills for AgentGuard Spend: local-runtime spend caps + capability gates + signed audit receipts for AI agents. Wrap OpenAI, Anthropic, Bedrock, or OpenRouter clients. Zero data plane.",
+  "version": "0.2.2",
+  "author": {
+    "name": "AgentGuard",
+    "url": "https://agentguard.run"
+  }
+}
