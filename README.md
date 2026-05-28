@@ -25,11 +25,44 @@ cp -r /tmp/agentguard-skills/skills/* ~/.config/opencode/skills/
 rm -rf /tmp/agentguard-skills
 ```
 
-### GitHub CLI (`gh skill`)
+### OpenAI Codex / Codex CLI
 
-Works with Claude Code, Cursor, OpenCode, Codex, Gemini CLI, Windsurf, and many more. Requires [GitHub CLI](https://cli.github.com/) v2.90.0 or later.
+Codex CLI auto-discovers Agent Skills from any GitHub repo. Two install paths:
+
+**Option A — via GitHub CLI extension (recommended)**
 
 ```bash
+# Install the gh-skill extension once (if not already installed)
+gh extension install github/gh-skill
+
+# Then install the marketplace
+gh skill install agentguard-run/agentguard-skills
+```
+
+**Option B — direct copy (no extensions needed)**
+
+```bash
+git clone https://github.com/agentguard-run/agentguard-skills.git /tmp/agentguard-skills
+mkdir -p ~/.codex/skills
+cp -r /tmp/agentguard-skills/skills/* ~/.codex/skills/
+rm -rf /tmp/agentguard-skills
+```
+
+Verify with `codex skills list`.
+
+### Gemini CLI / Windsurf / Pi
+
+Same `gh skill install` flow as Codex above (or direct copy to the tool's skills directory: `~/.gemini-cli/skills/`, `~/.codeium/windsurf/skills/`, etc.).
+
+### GitHub CLI (`gh skill`) — universal
+
+Works with Claude Code, Cursor, OpenCode, Codex, Gemini CLI, Windsurf, and any tool that supports the Agent Skills standard. Requires [GitHub CLI](https://cli.github.com/) v2.90.0+ and the `gh-skill` extension.
+
+```bash
+# One-time extension install
+gh extension install github/gh-skill
+
+# Install the full marketplace
 gh skill install agentguard-run/agentguard-skills
 ```
 

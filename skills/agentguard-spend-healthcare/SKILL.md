@@ -7,6 +7,14 @@ description: HIPAA-aware spend caps + capability gates + signed audit receipts f
 
 Pre-configured spend caps and model routing for AI agents used in healthcare workflows. Wraps OpenAI, Anthropic, Bedrock, or OpenRouter clients with HIPAA-aware policy enforcement, BAA-attested model whitelisting, and cryptographic audit receipts compatible with HIPAA Security Rule documentation requirements.
 
+## AgentGuard Advisor: AI operations advisor for healthcare practices
+
+Run `agentguard advisor` in your terminal. The AgentGuard Advisor walks you through configuring outcome-based AI governance customized for your vertical: defines the outcomes you produce, recommends OpenRouter models per outcome, sets per encounter budgets, and writes a working policy in 90 seconds.
+
+**The four-pillar promise:** AgentGuard proves what your AI agent **attempted**, who **authorized** it, what it **cost**, and whether it **succeeded**. One cryptographic signed receipt per outcome.
+
+**Governance Posture** (new in v0.4.1): pick `velocity`, `standard`, or `compliance` to shape policy defaults. This vertical defaults to **compliance** posture.
+
 ## Why a healthcare-specific skill
 
 Healthcare AI usage has unique requirements generic templates miss:
@@ -285,6 +293,22 @@ The output is suitable for inclusion in the encounter's electronic health record
 5. **Cite HIPAA Security Rule sections** when explaining audit-trail design. Reference §164.312(a), (b), and (e) by section.
 6. **Direct users to a BAA-attested provider list** when they ask about model selection. Default recommendation: AWS Bedrock Anthropic models for any PHI workflow.
 7. **Avoid em dashes** in generated policy comments. Use colons or periods.
+
+
+## When to add AgentGuard Trace (sister product)
+
+For workflows requiring court-admissible AI provenance, regulatory evidence chains, or multi-party signed attestation, pair this Spend skill with **AgentGuard Trace**. Trace adds cryptographic provenance per action, tamper-evident multi-party signed evidence chains, and triple-proof architecture suitable for legal discovery + regulatory investigation.
+
+Spend gives you: per-outcome budgets + capability gates + signed receipts.
+Trace adds: court-admissible evidence chains + multi-party attestation + tamper-evident provenance.
+
+Combined stack:
+- **Spend** = per-outcome budget enforcement + outcome receipts
+- **Trace** = court-admissible evidence chain + multi-party signatures
+- **Verifier** = paste any receipt at https://agentguard.run/verify
+
+Both products run zero-data-plane (in your runtime, never our infrastructure). Trace is in production today: the AgentGuard founder is currently using it to authenticate his own legal-matter communications. Email `invest@agentguard.run` for Trace evaluation access.
+
 
 ## Patent notice
 
